@@ -1,0 +1,11 @@
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\bin\Debug\net8.0\GodownERP.Domain.deps.json
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\bin\Debug\net8.0\GodownERP.Domain.dll
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\bin\Debug\net8.0\GodownERP.Domain.pdb
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\GodownERP.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\GodownERP.Domain.AssemblyInfoInputs.cache
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\GodownERP.Domain.AssemblyInfo.cs
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\GodownERP.Domain.csproj.CoreCompileInputs.cache
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\GodownERP.Domain.dll
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\refint\GodownERP.Domain.dll
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\GodownERP.Domain.pdb
+C:\Users\HP\Desktop\GodownERP\GodownERP.Domain\obj\Debug\net8.0\ref\GodownERP.Domain.dll
