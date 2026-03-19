@@ -33,7 +33,7 @@ namespace GodownERP.Api.Controllers
             if (existingUser != null)
                 return BadRequest("Email already exists");
 
-            // Hash the password using BCrypt
+            // Hash password
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var user = new User
@@ -48,6 +48,23 @@ namespace GodownERP.Api.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            // 🔹 Find role from Roles table
+            var role = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Name == request.RoleName);
+
+            if (role == null)
+                return BadRequest("Invalid role");
+
+            // 🔹 Create UserRole mapping
+            var userRole = new UserRole
+            {
+                UserId = user.Id,
+                RoleId = role.Id
+            };
+
+            _context.UserRoles.Add(userRole);
+            await _context.SaveChangesAsync();
+
             return Ok("User registered successfully");
         }
 
@@ -60,11 +77,16 @@ namespace GodownERP.Api.Controllers
             if (user == null)
                 return Unauthorized("Invalid email or password");
 
-            // For now we skip password hashing validation
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return Unauthorized("Invalid email or password");
 
-            var (token, expiration) = _jwtService.GenerateToken(user);
+            // 🔹 Get user role
+            var roleName = await _context.UserRoles
+                .Where(ur => ur.UserId == user.Id)
+                .Select(ur => ur.Role.Name)
+                .FirstOrDefaultAsync();
+
+            var (token, expiration) = _jwtService.GenerateToken(user, roleName);
 
             return Ok(new LoginResponse
             {

@@ -1,10 +1,11 @@
-﻿using GodownERP.Domain.Entities;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using GodownERP.Domain.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GodownERP.Infrastructure.Security
 {
@@ -17,7 +18,7 @@ namespace GodownERP.Infrastructure.Security
             _configuration = configuration;
         }
 
-        public (string Token, DateTime Expiration) GenerateToken(User user)
+        public (string Token, DateTime Expiration) GenerateToken(User user, string role)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
 
@@ -35,7 +36,7 @@ namespace GodownERP.Infrastructure.Security
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("FullName", user.FullName)
+                new Claim(ClaimTypes.Role, role ?? "")
             };
 
             var expiration = DateTime.UtcNow.AddMinutes(

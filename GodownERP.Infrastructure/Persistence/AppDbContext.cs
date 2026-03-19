@@ -24,6 +24,7 @@ namespace GodownERP.Infrastructure.Persistence
         // ------------------------
         public DbSet<Vendor> Vendors => Set<Vendor>();
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<InventoryTransaction> InventoryTransactions => Set<InventoryTransaction>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

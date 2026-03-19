@@ -21,6 +21,7 @@ namespace GodownERP.Api.Controllers
         // ---------------------------
         // CREATE Product
         // ---------------------------
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(Product product)
         {
@@ -81,6 +82,7 @@ namespace GodownERP.Api.Controllers
         // ---------------------------
         // UPDATE Product
         // ---------------------------
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(Guid id, Product updatedProduct)
         {
@@ -105,6 +107,7 @@ namespace GodownERP.Api.Controllers
         // ---------------------------
         // SOFT DELETE Product
         // ---------------------------
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
@@ -120,9 +123,11 @@ namespace GodownERP.Api.Controllers
 
             return Ok("Product deactivated successfully");
         }
+
         // ---------------------------
         // INCREASE STOCK
         // ---------------------------
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPost("{id}/increase-stock")]
         public async Task<IActionResult> IncreaseStock(Guid id, [FromQuery] int quantity)
         {
@@ -134,16 +139,35 @@ namespace GodownERP.Api.Controllers
             if (product == null || !product.IsActive)
                 return NotFound();
 
+            // Update product stock
             product.StockQuantity += quantity;
             product.UpdatedAt = DateTime.UtcNow;
+
+            // Get logged-in user
+            var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+
+            // Create inventory transaction
+            var transaction = new InventoryTransaction
+            {
+                Id = Guid.NewGuid(),
+                ProductId = product.Id,
+                Quantity = quantity,
+                Type = "IN",
+                CreatedAt = DateTime.UtcNow,
+                UserId = userId
+            };
+
+            _context.InventoryTransactions.Add(transaction);
 
             await _context.SaveChangesAsync();
 
             return Ok(new { product.Id, product.StockQuantity });
         }
+
         // ---------------------------
         // DECREASE STOCK
         // ---------------------------
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPost("{id}/decrease-stock")]
         public async Task<IActionResult> DecreaseStock(Guid id, [FromQuery] int quantity)
         {
@@ -158,12 +182,45 @@ namespace GodownERP.Api.Controllers
             if (product.StockQuantity < quantity)
                 return BadRequest("Insufficient stock");
 
+            // Update product stock
             product.StockQuantity -= quantity;
             product.UpdatedAt = DateTime.UtcNow;
+
+            // Get logged-in user
+            var userId = Guid.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+
+            // Create inventory transaction
+            var transaction = new InventoryTransaction
+            {
+                Id = Guid.NewGuid(),
+                ProductId = product.Id,
+                Quantity = quantity,
+                Type = "OUT",
+                CreatedAt = DateTime.UtcNow,
+                UserId = userId
+            };
+
+            _context.InventoryTransactions.Add(transaction);
 
             await _context.SaveChangesAsync();
 
             return Ok(new { product.Id, product.StockQuantity });
+        }
+        [HttpGet("low-stock")]
+        public async Task<IActionResult> GetLowStockProducts()
+        {
+            var products = await _context.Products
+                .Where(p => p.IsActive && p.StockQuantity <= p.LowStockThreshold)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.StockQuantity,
+                    p.LowStockThreshold
+                })
+                .ToListAsync();
+
+            return Ok(products);
         }
     }
 }

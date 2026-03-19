@@ -24,6 +24,11 @@ function Sidebar() {
         <Link to="/users" className="sidebar-link">
           👤 Users
         </Link>
+        
+        <Link to="/inventory" className="sidebar-link">
+            📦 Inventory
+        </Link>
+        
 
       </nav>
 

@@ -64,9 +64,60 @@ namespace GodownERP.Api.Controllers
         {
             var totalValue = await _context.Products
                 .Where(p => p.IsActive)
-                .SumAsync(p => p.CostPrice * p.StockQuantity);
+                .SumAsync(p => p.StockQuantity * p.CostPrice);
 
-            return Ok(new { InventoryValue = totalValue });
+            return Ok(new
+            {
+                InventoryValue = totalValue
+            });
+        }
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetDashboardSummary()
+        {
+            var totalProducts = await _context.Products
+                .Where(p => p.IsActive)
+                .CountAsync();
+
+            var totalVendors = await _context.Vendors
+                .Where(v => v.IsActive)
+                .CountAsync();
+
+            var totalStock = await _context.Products
+                .Where(p => p.IsActive)
+                .SumAsync(p => p.StockQuantity);
+
+            var lowStockProducts = await _context.Products
+                .Where(p => p.IsActive && p.StockQuantity <= p.LowStockThreshold)
+                .CountAsync();
+
+            var inventoryValue = await _context.Products
+                .Where(p => p.IsActive)
+                .SumAsync(p => p.StockQuantity * p.CostPrice);
+
+            return Ok(new
+            {
+                TotalProducts = totalProducts,
+                TotalVendors = totalVendors,
+                TotalStock = totalStock,
+                LowStockProducts = lowStockProducts,
+                InventoryValue = inventoryValue
+            });
+        }
+        [HttpGet("top-products")]
+        public async Task<IActionResult> GetTopProducts()
+        {
+            var products = await _context.Products
+                .Where(p => p.IsActive)
+                .OrderByDescending(p => p.StockQuantity)
+                .Take(5)
+                .Select(p => new
+                {
+                    Product = p.Name,
+                    Stock = p.StockQuantity
+                })
+                .ToListAsync();
+
+            return Ok(products);
         }
     }
 }

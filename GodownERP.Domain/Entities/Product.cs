@@ -5,10 +5,13 @@ namespace GodownERP.Domain.Entities
     public class Product : BaseEntity
     {
         public string Name { get; set; } = string.Empty;
+        public int LowStockThreshold { get; set; } = 10;
+
 
         public string SKU { get; set; } = string.Empty;
 
         public decimal Price { get; set; }
+
 
         public decimal CostPrice { get; set; }
 

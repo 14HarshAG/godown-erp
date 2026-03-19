@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Vendors() {
+
   const [vendors, setVendors] = useState([]);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   const [newVendor, setNewVendor] = useState({
     name: "",
@@ -19,6 +21,7 @@ function Vendors() {
 
   const fetchVendors = async () => {
     try {
+
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
@@ -31,10 +34,13 @@ function Vendors() {
       );
 
       setVendors(response.data);
+
     } catch (err) {
+
       console.error(err);
 
       if (err.response) {
+
         if (err.response.status === 401) {
           setError("Unauthorized (401)");
         } else if (err.response.status === 403) {
@@ -42,52 +48,35 @@ function Vendors() {
         } else {
           setError("Error fetching vendors");
         }
+
       } else {
         setError("Server not reachable");
       }
+
     }
   };
 
-  const handleCreateVendor = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  const handleEdit = (vendor) => {
 
-      await axios.post(
-        "https://localhost:7289/api/Vendors",
-        {
-          name: newVendor.name,
-          email: newVendor.email,
-          phone: newVendor.phone,
-          address: newVendor.address
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    setNewVendor({
+      name: vendor.name,
+      email: vendor.email,
+      phone: vendor.phone,
+      address: vendor.address
+    });
 
-      setNewVendor({
-        name: "",
-        email: "",
-        phone: "",
-        address: ""
-      });
+    setEditingId(vendor.id);
+    setShowForm(true);
 
-      setShowForm(false);
-      fetchVendors();
-
-    } catch (err) {
-      console.error(err);
-      alert("Error creating vendor");
-    }
   };
 
-  const handleDeleteVendor = async (id) => {
+  const deleteVendor = async (id) => {
+
     const confirmDelete = window.confirm("Are you sure you want to delete this vendor?");
     if (!confirmDelete) return;
 
     try {
+
       const token = localStorage.getItem("token");
 
       await axios.delete(
@@ -100,14 +89,74 @@ function Vendors() {
       );
 
       fetchVendors();
+
     } catch (err) {
+
       console.error(err);
       alert("Error deleting vendor");
+
     }
+
+  };
+
+  const handleCreateVendor = async () => {
+
+    try {
+
+      const token = localStorage.getItem("token");
+
+      if (editingId) {
+
+        // UPDATE VENDOR
+        await axios.put(
+          `https://localhost:7289/api/Vendors/${editingId}`,
+          newVendor,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+      } else {
+
+        // CREATE VENDOR
+        await axios.post(
+          "https://localhost:7289/api/Vendors",
+          newVendor,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+      }
+
+      setNewVendor({
+        name: "",
+        email: "",
+        phone: "",
+        address: ""
+      });
+
+      setEditingId(null);
+      setShowForm(false);
+
+      fetchVendors();
+
+    } catch (err) {
+
+      console.error(err);
+      alert("Error saving vendor");
+
+    }
+
   };
 
   return (
     <div>
+
       <h2>Vendors Management</h2>
 
       <button
@@ -134,7 +183,8 @@ function Vendors() {
             borderRadius: "8px"
           }}
         >
-          <h3>Create New Vendor</h3>
+
+          <h3>{editingId ? "Edit Vendor" : "Create New Vendor"}</h3>
 
           <input
             placeholder="Name"
@@ -183,6 +233,7 @@ function Vendors() {
           >
             Save Vendor
           </button>
+
         </div>
       )}
 
@@ -193,6 +244,7 @@ function Vendors() {
         cellPadding="10"
         style={{ marginTop: "20px", width: "100%", background: "white" }}
       >
+
         <thead>
           <tr>
             <th>Id</th>
@@ -202,40 +254,71 @@ function Vendors() {
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
+
           {vendors.length > 0 ? (
+
             vendors.map((vendor) => (
+
               <tr key={vendor.id}>
+
                 <td>{vendor.id}</td>
                 <td>{vendor.name}</td>
                 <td>{vendor.email}</td>
                 <td>{vendor.phone}</td>
+
                 <td>
+
                   <button
-                    onClick={() => handleDeleteVendor(vendor.id)}
+                    onClick={() => handleEdit(vendor)}
                     style={{
-                      padding: "5px 10px",
-                      backgroundColor: "red",
+                      background: "#f59e0b",
                       color: "white",
                       border: "none",
-                      borderRadius: "5px",
+                      padding: "6px 10px",
+                      borderRadius: "4px",
+                      marginRight: "6px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => deleteVendor(vendor.id)}
+                    style={{
+                      background: "red",
+                      color: "white",
+                      border: "none",
+                      padding: "6px 10px",
+                      borderRadius: "4px",
                       cursor: "pointer"
                     }}
                   >
                     Delete
                   </button>
+
                 </td>
+
               </tr>
+
             ))
+
           ) : (
+
             <tr>
               <td colSpan="5" style={{ textAlign: "center" }}>
                 No Vendors Found
               </td>
             </tr>
+
           )}
+
         </tbody>
+
       </table>
+
     </div>
   );
 }
