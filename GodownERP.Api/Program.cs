@@ -29,7 +29,6 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    // 🔥 IMPORTANT FIX
     options.MapInboundClaims = false;
 
     options.TokenValidationParameters = new TokenValidationParameters
@@ -53,6 +52,9 @@ builder.Services.AddAuthentication(options =>
 // ----------------------
 builder.Services.AddScoped<JwtService>();
 
+// ----------------------
+// CORS Configuration
+// ----------------------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact",
@@ -79,7 +81,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' followed by space and then your JWT token."
+        Description = "Enter 'Bearer <your_token>'"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -103,19 +105,26 @@ var app = builder.Build();
 // ----------------------
 // Middleware Pipeline
 // ----------------------
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+// Enable Swagger ALWAYS (important for Render testing)
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// CORS FIRST
 app.UseCors("AllowReact");
 
-// 🔥 IMPORTANT ORDER
+// Optional HTTPS (safe)
+app.UseHttpsRedirection();
+
+// Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Controllers
 app.MapControllers();
 
-app.Run();
+// ----------------------
+// PORT FIX FOR RENDER
+// ----------------------
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Run($"http://0.0.0.0:{port}");
