@@ -171,60 +171,60 @@ function Product() {
   // INCREASE STOCK
   const handleIncreaseStock = async (productId) => {
 
-  const quantity = prompt("Enter quantity to increase:");
+    const quantity = prompt("Enter quantity to increase:");
 
-  if (!quantity) return;
+    if (!quantity) return;
 
-  try {
+    try {
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    await axios.post(
-      `https://localhost:7289/api/Products/${productId}/increase-stock?quantity=${quantity}`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
+      await axios.post(
+        `https://localhost:7289/api/Products/${productId}/increase-stock?quantity=${quantity}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
 
-    alert("Stock increased successfully");
+      alert("Stock increased successfully");
 
-    fetchProducts();
+      fetchProducts();
 
-  } catch (error) {
-    console.error("Increase stock error", error);
-  }
-};
+    } catch (error) {
+      console.error("Increase stock error", error);
+    }
+  };
 
 
 
   // DECREASE STOCK
-const handleDecreaseStock = async (productId) => {
+  const handleDecreaseStock = async (productId) => {
 
-  const quantity = prompt("Enter quantity to decrease:");
+    const quantity = prompt("Enter quantity to decrease:");
 
-  if (!quantity) return;
+    if (!quantity) return;
 
-  try {
+    try {
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    await axios.post(
-      `https://localhost:7289/api/Products/${productId}/decrease-stock?quantity=${quantity}`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
+      await axios.post(
+        `https://localhost:7289/api/Products/${productId}/decrease-stock?quantity=${quantity}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
 
-    alert("Stock decreased successfully");
+      alert("Stock decreased successfully");
 
-    fetchProducts();
+      fetchProducts();
 
-  } catch (error) {
-    console.error("Decrease stock error", error);
-  }
-};
+    } catch (error) {
+      console.error("Decrease stock error", error);
+    }
+  };
 
 
 
@@ -310,15 +310,31 @@ const handleDecreaseStock = async (productId) => {
 
                 <td>
 
-                  <button onClick={() => handleEdit(product)}>Edit</button>
+                  <button
+                    className="action-btn edit-btn"
+                    onClick={() => handleEdit(product)}
+                  >
+                    Edit
+                  </button>
 
-                  <button onClick={() => deleteProduct(product.id)}>Delete</button>
+                  <button
+                    className="action-btn delete-btn"
+                    onClick={() => deleteProduct(product.id)}
+                  >
+                    Delete
+                  </button>
 
-                  <button onClick={() => handleIncreaseStock(product.id)}>
+                  <button
+                    className="action-btn add-btn"
+                    onClick={() => handleIncreaseStock(product.id)}
+                  >
                     + Stock
                   </button>
 
-                  <button onClick={() => handleDecreaseStock(product.id)}>
+                  <button
+                    className="action-btn remove-btn"
+                    onClick={() => handleDecreaseStock(product.id)}
+                  >
                     - Stock
                   </button>
 

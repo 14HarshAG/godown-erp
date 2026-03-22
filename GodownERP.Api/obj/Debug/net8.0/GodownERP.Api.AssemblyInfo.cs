@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GodownERP.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0a4314d854a85459c8e77d98d4127147cabfef6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5183de83588893c7970494bf5bfb4a99830175e")]
 [assembly: System.Reflection.AssemblyProductAttribute("GodownERP.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GodownERP.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

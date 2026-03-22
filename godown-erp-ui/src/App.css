@@ -168,6 +168,35 @@ body{
 }
 
 /* BUTTONS */
+.action-btn {
+  padding: 5px 10px;
+  margin-right: 6px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  color: white;
+}
+
+/* Edit */
+.edit-btn {
+  background-color: #3b82f6;
+}
+
+/* Delete */
+.delete-btn {
+  background-color: #ef4444;
+}
+
+/* Increase */
+.add-btn {
+  background-color: #22c55e;
+}
+
+/* Decrease */
+.remove-btn {
+  background-color: #f59e0b;
+}
 
 .create-btn{
   margin-top:10px;

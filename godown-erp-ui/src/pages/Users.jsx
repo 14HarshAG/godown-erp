@@ -302,14 +302,14 @@ function Users() {
               <td>
 
                 <button
-                  className="edit-btn"
+                  className="action-btn edit-btn"
                   onClick={() => setEditingUser(user)}
                 >
                   Edit
                 </button>
 
                 <button
-                  className="delete-btn"
+                  className="action-btn delete-btn"
                   onClick={() => deleteUser(user.id)}
                 >
                   Delete
