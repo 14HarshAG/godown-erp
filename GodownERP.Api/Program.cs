@@ -60,7 +60,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReact",
         policy =>
         {
-            policy.AllowAnyOrigin()
+            policy.WithOrigins("https://godown-erp.vercel.app")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
