@@ -32,7 +32,7 @@ function Product() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://localhost:7289/api/Products",
+        "https://godown-erp-backend.onrender.com/api/Products",
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -55,7 +55,7 @@ function Product() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://localhost:7289/api/Vendors",
+        "https://godown-erp-backend.onrender.com/api/Vendors",
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -91,7 +91,7 @@ function Product() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `https://localhost:7289/api/Products/${id}`,
+        `https://godown-erp-backend.onrender.com/api/Products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -124,7 +124,7 @@ function Product() {
       if (editingId) {
 
         await axios.put(
-          `https://localhost:7289/api/Products/${editingId}`,
+          `https://godown-erp-backend.onrender.com/api/Products/${editingId}`,
           newProduct,
           {
             headers: {
@@ -136,7 +136,7 @@ function Product() {
       } else {
 
         await axios.post(
-          "https://localhost:7289/api/Products",
+          "https://godown-erp-backend.onrender.com/api/Products",
           newProduct,
           {
             headers: {
@@ -180,7 +180,7 @@ function Product() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        `https://localhost:7289/api/Products/${productId}/increase-stock?quantity=${quantity}`,
+        `https://godown-erp-backend.onrender.com/api/Products/${productId}/increase-stock?quantity=${quantity}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -210,7 +210,7 @@ function Product() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        `https://localhost:7289/api/Products/${productId}/decrease-stock?quantity=${quantity}`,
+        `https://godown-erp-backend.onrender.com/api/Products/${productId}/decrease-stock?quantity=${quantity}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` }

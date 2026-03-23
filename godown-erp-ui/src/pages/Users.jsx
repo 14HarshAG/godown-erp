@@ -22,7 +22,7 @@ function Users() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://localhost:7289/api/Users",
+        "https://godown-erp-backend.onrender.com/api/Users",
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -47,7 +47,7 @@ function Users() {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `https://localhost:7289/api/Users/${editingUser.id}`,
+        `https://godown-erp-backend.onrender.com/api/Users/${editingUser.id}`,
         {
           fullName: editingUser.fullName,
           email: editingUser.email,
@@ -75,7 +75,7 @@ function Users() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "https://localhost:7289/api/Users",
+        "https://godown-erp-backend.onrender.com/api/Users",
         {
           fullName: newUser.fullName,
           email: newUser.email,
@@ -115,7 +115,7 @@ function Users() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `https://localhost:7289/api/Users/${id}`,
+        `https://godown-erp-backend.onrender.com/api/Users/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

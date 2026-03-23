@@ -35,7 +35,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://localhost:7289/api/Dashboard/summary",
+        "https://godown-erp-backend.onrender.com/api/Dashboard/summary",
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -59,7 +59,7 @@ function Dashboard() {
     const token = localStorage.getItem("token");
 
     const response = await axios.get(
-      "https://localhost:7289/api/Products/low-stock",
+      "https://godown-erp-backend.onrender.com/api/Products/low-stock",
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -80,7 +80,7 @@ function Dashboard() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://localhost:7289/api/Inventory/movement",
+        "https://godown-erp-backend.onrender.com/api/Inventory/movement",
         {
           headers: { Authorization: `Bearer ${token}` }
         }

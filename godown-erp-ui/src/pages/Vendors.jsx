@@ -25,7 +25,7 @@ function Vendors() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "https://localhost:7289/api/Vendors",
+        "https://godown-erp-backend.onrender.com/api/Vendors",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ function Vendors() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `https://localhost:7289/api/Vendors/${id}`,
+        `https://godown-erp-backend.onrender.com/api/Vendors/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ function Vendors() {
 
         // UPDATE VENDOR
         await axios.put(
-          `https://localhost:7289/api/Vendors/${editingId}`,
+          `https://godown-erp-backend.onrender.com/api/Vendors/${editingId}`,
           newVendor,
           {
             headers: {
@@ -122,7 +122,7 @@ function Vendors() {
 
         // CREATE VENDOR
         await axios.post(
-          "https://localhost:7289/api/Vendors",
+          "https://godown-erp-backend.onrender.com/api/Vendors",
           newVendor,
           {
             headers: {

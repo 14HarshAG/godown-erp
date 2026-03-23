@@ -24,7 +24,7 @@ function Inventory() {
             const token = localStorage.getItem("token");
 
             const response = await axios.get(
-                `https://localhost:7289/api/Inventory/history?page=${page}&pageSize=${pageSize}&search=${search}`
+                `https://godown-erp-backend.onrender.com/api/Inventory/history?page=${page}&pageSize=${pageSize}&search=${search}`
                 ,
                 {
                     headers: { Authorization: `Bearer ${token}` }
